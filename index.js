@@ -11,7 +11,6 @@ const server = http.createServer((req, res) => {
     } else if(req.url === "/about") {
         res.end("This is the about page.\n");
     } else {
-        res.statusCode = 404;
         res.end(" 404 Page not found.\n");
     }
 });
