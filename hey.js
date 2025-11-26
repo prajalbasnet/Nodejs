@@ -1,33 +1,42 @@
-const http = require("http");
+import http from 'http'
+import url from 'url'
+import fs from 'fs'
 
 const server = http.createServer((req, res) => {
-console.log(req.method, req.url, req.headers);
-if(req.url === "/") {
-res.setHeader("Content-Type", "text/html");
-res.write('<html>');
-res.write('<head><title>My First Page</title></head>');
-res.write('<body><h1>Hello from my Node.js server!</h1></body>');
-res.write('</html>');
-return res.end();
-}
-else if(req.url === "/about") {
-res.setHeader("Content-Type", "text/html");
-res.write('<html>');
-res.write('<head><title>About Page</title></head>');
-res.write('<body><h1>This is the about page.</h1></body>');
-res.write('</html>');
-return res.end();
-}
-res.statusCode = 404;
-res.setHeader("Content-Type", "text/html");
-res.write('<html>');
-res.write('<head><title>Page Not Found</title></head>');
-res.write('<body><h1>404 - Page Not Found</h1></body>');
-res.write('</html>');
-res.end();
+    res.setHeader('Content-Type', 'text/html')
 
-});
+    if (req.url === '/') {
+        res.write('<h1>Welcome to Login page</h1>')
+        res.write(`
+            <form action="/details" method="get">
+                <input type="text" name="username" placeholder="username">
+                <input type="password" name="password" placeholder="password">
+                <button type="submit">Login</button>
+            </form>
+        `)
+        return res.end()
+    }
 
-server.listen(3000, () => {
-console.log("Server running at http://localhost:3000/");
-});
+    else if (req.url.startsWith('/details')) {
+
+        const { username, password } = url.parse(req.url, true).query
+
+        const data = `username: ${username}, password: ${password}`
+
+        fs.writeFileSync('info.txt', data)
+
+        res.end('Details saved successfully')
+    }
+
+
+    else {
+        res.write('<h1>404 Not Found</h1>')
+        res.end()
+    }
+
+})
+
+const port = 3001
+server.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`)
+})
