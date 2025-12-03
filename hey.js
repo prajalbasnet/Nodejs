@@ -1,6 +1,6 @@
-import http from 'http'
-import url from 'url'
-import fs from 'fs'
+const http = require('http')
+const fs = require('fs')
+const url = require('url')
 
 const server = http.createServer((req, res) => {
     res.setHeader('Content-Type', 'text/html')
@@ -27,9 +27,7 @@ const server = http.createServer((req, res) => {
 
         res.end('Details saved successfully')
     }
-
-
-    else {
+else {
         res.write('<h1>404 Not Found</h1>')
         res.end()
     }
