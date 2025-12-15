@@ -1,4 +1,5 @@
 import http from 'http';
+import userschema from './'
 
 const port = process.env.PORT || 3000;
 
